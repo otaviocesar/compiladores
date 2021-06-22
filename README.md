@@ -13,6 +13,7 @@
 	
 
 ## Analisador Léxico
+### Especificação da microsintaxe
 -------------------
 * Palavras reservadas: 
 
