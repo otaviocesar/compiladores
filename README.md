@@ -12,19 +12,15 @@
     7. Projeto do tradutor - Parte2
 	
 
-* Analisador Léxico
+## Analisador Léxico
 -------------------
+* Palavras reservadas: 
 
-  
-| Palavra Token                        | Expressão     |
-|--------------------------------------|--------------------------------------|
-| Palavras reservadas                  | ```  xxxxxxx ``` |
-| Identificadores                      | ```  xxxxxxx ```                          |
-| Número                               | ```  xxxxxxx ```                                   |
-| Letra                                | ```  xxxxxxx ```                                 |
-| Dígito                               | ```  xxxxxxx ```                                           |
-| Símbolo                              | ```  xxxxxxx ```                                 |
-| Cadeia Constante                     | ```  xxxxxxx ```                |
-| Operadores                           |  ```  xxxxxxx ```         |
-| Delimitadores                        |  ```  xxxxxxx ```                                |
-| Comentários               |  ```  xxxxxxx ```                |
+	* 'class' | 'constructor' | 'function' | 'method' | 'field' | 'static' | 'var' | 'int' | 'char' | 'boolean' | 'void' | 'true' | 'false' | 'null' | 'this' | 'let' |  do' | 'if' | 'else' | 'while' | 'return’
+
+- Símbolos: 
+	* '{' | '}' | '(' | ')' | '[' | ']' | '. ' | ', ' | '; ' | '+' | '-' | '*' | '/' | '&' | '|' | '<' | '>' | '=' | '~'
+
+- Inteiros: um número decimal inteiro
+- Strings: "uma sequência de caracteres Unicode entre aspas dupla"
+- Identificadores: uma sequência de letras, digitos e *undescore* ( '_' ) não iniciando com um dígito.
