@@ -10,7 +10,7 @@ class JackTockenizer:
 
     def __init__(self):
         #  arquivo(.jack) com o script a ser compitalado
-        self.file_script_input = "script.jack"
+        self.file_script_input = "main.jack"
 
     def isLetter (self, string):
         letter = "[a-z][A-Z]" # obs: definir regex ainda
