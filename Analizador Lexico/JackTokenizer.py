@@ -6,7 +6,7 @@
 
 '''
 
-class JackTocknizer:
+class JackTockenizer:
 
     def __init__(self):
         #  arquivo(.jack) com o script a ser compitalado
