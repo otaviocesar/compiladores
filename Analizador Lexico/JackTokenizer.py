@@ -34,14 +34,14 @@ class JackTockenizer:
         return False
 
     # Identifica se a entrada é um operador
-    def isOperator(self, byte_in):
+    def isOperator(byte_in):
         operators = '. + - * / ++ -- == != > >= < <= && || ='.split()
         if byte_in in operators:
             return True
         return False
 
     # Identifica se a entrada é um simbolo
-    def isSymbol(self, token):
+    def isSymbol(token):
         symbols = ''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHJKLMNOPQRSTUVXWYZ[\]^_`abcdefghijklmnopqrstuvxwyz{|}~'''
         if(token in symbols):
             return True
@@ -129,16 +129,34 @@ class JackTockenizer:
 
         return ret
 
+    def token_type(token):
+        # Retorna o tipo do token
+        # Tipos: KEYWORD, SYMBOL, IDENTIFIER, INT_CONST, STRING_CONST
+
+        symbol_type = None
+        if (JackTockenizer.isKeyword(token)):
+            symbol_type = 'KEYWORD'
+        elif (JackTockenizer.isSymbol(token)):
+            symbol_type = 'SYMBOL'
+        elif (JackTockenizer.isDigit(token)):
+            symbol_type = 'INT_CONST'
+        elif (JackTockenizer.isString(token)):
+            symbol_type = 'STRING_CONST'
+        elif (JackTockenizer.isIdentifier(token)):
+            symbol_type = 'IDENTIFIER'
+        elif (JackTockenizer.isOperator(token)):
+            symbol_type = 'OPERATOR'
+        else:
+            raise SyntaxError('Token Inválido: {}'.format(token))
+        return symbol_type   
+
 # Chamando o arquivo main.jack e imprimindo os tokens enumerados.  
 if __name__ == "__main__":
     with open('main.jack', 'r') as f:
         TEST_LINES = f.readlines()
     TOKENIZER = JackTockenizer(TEST_LINES)
-    for i, tk in enumerate(TOKENIZER.tokens):
-        print(i, tk)
-        #print(JackTockenizer.isKeyword(tk))
-        #print(JackTockenizer.isDigit(tk))
-        #print(JackTockenizer.isString(tk))
-        #print(JackTockenizer.isIdentifier(tk))
+    for i, token in enumerate(TOKENIZER.tokens):
+        print(i, token)
+        print(JackTockenizer.token_type(token))
     print('-----------------')
 
