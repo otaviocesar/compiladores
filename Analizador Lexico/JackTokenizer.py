@@ -22,20 +22,18 @@ class JackTockenizer:
         
         self.total_tokens = len(self.tokens)
 
-    def isLetter (self, string):
-        letter = "[a-z][A-Z]" # obs: definir regex ainda
-        if string in letter:
+    def isString (token):
+        if token.startswith('"'):
             return True
         return False
 
-     # Identifica se a entrada é um digito
-    def isDigit (self, string):
-        digit = '0123456789'
-        if string in digit:
+    # Identifica se a entrada é um digito
+    def isDigit (token):
+        if token.isdigit():
             return True
         return False
 
-     # Identifica se a entrada é um operador
+    # Identifica se a entrada é um operador
     def isOperator(self, byte_in):
         operators = '. + - * / ++ -- == != > >= < <= && || ='.split()
         if byte_in in operators:
@@ -43,9 +41,25 @@ class JackTockenizer:
         return False
 
     # Identifica se a entrada é um simbolo
-    def isSymbol(self, string):
+    def isSymbol(self, token):
         symbols = ''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHJKLMNOPQRSTUVXWYZ[\]^_`abcdefghijklmnopqrstuvxwyz{|}~'''
-        if(string in symbols):
+        if(token in symbols):
+            return True
+        return False
+
+    # Identifica se a entrada é uma Palavra chave
+    def isKeyword (token):
+        digit = ('class', 'constructor', 'function', 'method', 
+                'field', 'static', 'var', 'int', 'char', 'if',
+                'boolean', 'void', 'true', 'false', 'null',
+                'this', 'let', 'do', 'return', 'else', 'while')
+        if token in digit:
+            return True
+        return False
+
+    # Identifica se a entrada é uma Palavra chave
+    def isIdentifier (token):
+        if (not token[0].isdigit()):
             return True
         return False
     
@@ -122,5 +136,9 @@ if __name__ == "__main__":
     TOKENIZER = JackTockenizer(TEST_LINES)
     for i, tk in enumerate(TOKENIZER.tokens):
         print(i, tk)
+        #print(JackTockenizer.isKeyword(tk))
+        #print(JackTockenizer.isDigit(tk))
+        #print(JackTockenizer.isString(tk))
+        #print(JackTockenizer.isIdentifier(tk))
     print('-----------------')
 
