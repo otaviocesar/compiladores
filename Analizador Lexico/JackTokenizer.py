@@ -12,7 +12,7 @@ class JackTockenizer:
 
     def __init__(self, input_code):
         #  arquivo(.jack) com o script a ser compitalado
-        self.file_script_input = "main.jack"
+        self.file_script_input = "Square.jack"
         # Transforma o código em uma lista de tokens
         self.current_token_index = 0
         self.tokens = []
@@ -135,20 +135,33 @@ class JackTockenizer:
 
         symbol_type = None
         if (JackTockenizer.isKeyword(token)):
-            symbol_type = 'KEYWORD'
+            #symbol_type = 'KEYWORD'
+            symbol_type =  "<keyword> %s </keyword>" % token
         elif (JackTockenizer.isSymbol(token)):
-            symbol_type = 'SYMBOL'
+            #symbol_type = 'SYMBOL'
+            if token == "<":
+                symbol_type = "<symbol> &lt; </symbol>"
+            elif token == ">":
+                symbol_type = "<symbol> &gt; </symbol>"
+            elif token == "&":
+                symbol_type = "<symbol> &amp; </symbol>"
+            else:
+                symbol_type = "<symbol> %s </symbol>" % token
+
         elif (JackTockenizer.isDigit(token)):
-            symbol_type = 'INT_CONST'
+            #symbol_type = 'INT_CONST'
+            symbol_type = "<integerConstant> %s </integerConstant>" % token
         elif (JackTockenizer.isString(token)):
-            symbol_type = 'STRING_CONST'
+            #symbol_type = 'STRING_CONST'
+            symbol_type = "<stringConstant> %s </stringConstant>" % token[1:-1]
         elif (JackTockenizer.isIdentifier(token)):
-            symbol_type = 'IDENTIFIER'
+            #symbol_type = 'IDENTIFIER'
+            symbol_type  = "<identifier> %s </identifier>" % token
         elif (JackTockenizer.isOperator(token)):
             symbol_type = 'OPERATOR'
         else:
             raise SyntaxError('Token Inválido: {}'.format(token))
-        return symbol_type   
+        return symbol_type 
 
 # Chamando o arquivo main.jack e imprimindo os tokens enumerados.  
 if __name__ == "__main__":
