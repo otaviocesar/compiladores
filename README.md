@@ -1,5 +1,8 @@
 # Implementação de um Compilador
 
+## Como rodar esse Projeto?
+	1. cd /Analisador Lexico
+	2. No terminal rodar o comando: Python JackCompiler.py
 
 ## Etapas
 
