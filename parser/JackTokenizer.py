@@ -8,17 +8,17 @@
 #Suporte para expressões regulares
 import re
 
-class JackTockenizer:
+class JackTokenizer:
 
-    def __init__(self, input_code):
-        #  arquivo(.jack) com o script a ser compitalado
+    def __init__(self, raw_code):
+        #  arquivo(.jack) com o script a ser compilado
         self.file_script_input = "Square.jack"
         # Transforma o código em uma lista de tokens
         self.current_token_index = 0
         self.tokens = []
-        clean_code = JackTockenizer.clean_code(input_code)
+        clean_code = JackTokenizer.clean_code(raw_code)
         for line in clean_code:
-            self.tokens.extend(JackTockenizer.handle_line(line))
+            self.tokens.extend(JackTokenizer.handle_line(line))
         
         self.total_tokens = len(self.tokens)
 
@@ -62,7 +62,36 @@ class JackTockenizer:
         if (not token[0].isdigit()):
             return True
         return False
-    
+
+    def keyWord(token):
+        """Returns the keyword which is the current token."""
+        if (JackTokenizer.isKeyword(token)):
+            return token
+        
+    def symbol(token):
+        """Returns the character which is the current token."""
+        if (JackTokenizer.isSymbol(token)):
+            return token
+
+        
+    def identifier(token):
+        """Returns the identifier which is the current token."""
+        if (JackTokenizer.isIdentifier(token)):
+            return token
+
+        
+    def intVal(token):
+        """Returns the integer value of the current token."""
+        if (JackTokenizer.isDigit(token)):
+            return token
+
+
+    def stringVal(token):
+        """Returns the string value of the current token, without the double quotes."""
+        if (JackTokenizer.stringVal(token)):
+            #skip quotes in constant
+            return token[1:-1]
+
     @staticmethod
     def clean_code(input_code):
         # Remove comentários e linha adicionais do código de entrada
@@ -80,9 +109,9 @@ class JackTockenizer:
                 comment_on = False
 
         lines = [line.split('//')[0].strip() for line in lines 
-                 if JackTockenizer.is_valid(line)]
+                 if JackTokenizer.is_valid(line)]
         return lines
-
+    
     @staticmethod
     def is_valid(line):
         # Verifica se é uma linha de código Jack válida. 
@@ -96,12 +125,12 @@ class JackTockenizer:
         ret = []
         if '"' in line:
             match = re.search(r"(\".*?\")", line)
-            ret.extend(JackTockenizer.handle_line(match.string[:match.start()]))
+            ret.extend(JackTokenizer.handle_line(match.string[:match.start()]))
             ret.append(match.string[match.start():match.end() - 1])
-            ret.extend(JackTockenizer.handle_line(match.string[match.end():]))
+            ret.extend(JackTokenizer.handle_line(match.string[match.end():]))
         else:
             for candidate in line.split():
-                ret.extend(JackTockenizer.handle_token_candidate(candidate))
+                ret.extend(JackTokenizer.handle_token_candidate(candidate))
         return ret
 
     @staticmethod
@@ -117,11 +146,11 @@ class JackTockenizer:
             r"([\&\|\(\)<=\+\-\*>\\/.;,\[\]}{~])", candidate.strip()
         )
         if match is not None:
-            ret.extend(JackTockenizer.handle_token_candidate(
+            ret.extend(JackTokenizer.handle_token_candidate(
                 match.string[:match.start()]
             ))
             ret.append(match.string[match.start()])
-            ret.extend(JackTockenizer.handle_token_candidate(
+            ret.extend(JackTokenizer.handle_token_candidate(
                 match.string[match.end():]
             ))
         else:
@@ -134,10 +163,10 @@ class JackTockenizer:
         # Tipos: KEYWORD, SYMBOL, IDENTIFIER, INT_CONST, STRING_CONST
 
         symbol_type = None
-        if (JackTockenizer.isKeyword(token)):
+        if (JackTokenizer.isKeyword(token)):
             #symbol_type = 'KEYWORD'
             symbol_type =  "<keyword> %s </keyword>" % token
-        elif (JackTockenizer.isSymbol(token)):
+        elif (JackTokenizer.isSymbol(token)):
             #symbol_type = 'SYMBOL'
             if token == "<":
                 symbol_type = "<symbol> &lt; </symbol>"
@@ -148,28 +177,67 @@ class JackTockenizer:
             else:
                 symbol_type = "<symbol> %s </symbol>" % token
 
-        elif (JackTockenizer.isDigit(token)):
+        elif (JackTokenizer.isDigit(token)):
             #symbol_type = 'INT_CONST'
             symbol_type = "<integerConstant> %s </integerConstant>" % token
-        elif (JackTockenizer.isString(token)):
+        elif (JackTokenizer.isString(token)):
             #symbol_type = 'STRING_CONST'
             symbol_type = "<stringConstant> %s </stringConstant>" % token[1:-1]
-        elif (JackTockenizer.isIdentifier(token)):
+        elif (JackTokenizer.isIdentifier(token)):
             #symbol_type = 'IDENTIFIER'
             symbol_type  = "<identifier> %s </identifier>" % token
-        elif (JackTockenizer.isOperator(token)):
+        elif (JackTokenizer.isOperator(token)):
             symbol_type = 'OPERATOR'
         else:
             raise SyntaxError('Token Inválido: {}'.format(token))
         return symbol_type 
 
+    
+    def advance(self):
+        """Advance the token pointer by one. Throws error if no more tokens."""
+
+        if self.has_more_tokens():
+            self.current_token_index += 1
+        else:
+            raise IndexError('No more tokens.')
+    
+    def has_more_tokens(self):
+        """Check if there are more tokens available."""
+        return self.current_token_index < (self.total_tokens - 1)
+
+    @property
+    def curr_token(self):
+        """Return the current token. 
+        
+        Returns:
+            str: Current token
+        """
+
+        return self.tokens[self.current_token_index]
+    
+    @property
+    def next_token(self):
+        """Returns next token if there is one.
+        """
+
+        if self.has_more_tokens():
+            return self.tokens[self.current_token_index + 1]
+    
+    @property
+    def prev_token(self):
+        """Returns the previous token, if there is one. 
+        """
+
+        if self.current_token_index > 0:
+            return self.tokens[self.current_token_index - 1]
+
+
 # Chamando o arquivo main.jack e imprimindo os tokens enumerados.  
 if __name__ == "__main__":
     with open('main.jack', 'r') as f:
         TEST_LINES = f.readlines()
-    TOKENIZER = JackTockenizer(TEST_LINES)
+    TOKENIZER = JackTokenizer(TEST_LINES)
     for i, token in enumerate(TOKENIZER.tokens):
         print(i, token)
-        print(JackTockenizer.token_type(token))
+        print(JackTokenizer.token_type(token))
     print('-----------------')
-

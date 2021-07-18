@@ -7,8 +7,10 @@
 '''
 import JackTokenizer
 import os.path
+import sys
 
 def main():
+    print('----------------- Analise Léxica------------------------')
     # Chamando o arquivo main.jack e imprimindo os tokens enumerados.  
     with open('Square.jack', 'r') as f:
         TEST_LINES = f.readlines()
@@ -26,8 +28,7 @@ def main():
             jtokresult.write(JackTokenizer.JackTockenizer.token_type(token))
 
         jtokresult.write("</tokens>")    
-    print('-----------------')
-
+    print('----------------- Arquivo Gerado com Sucesso------------------')
 
 if __name__ == '__main__':
     main()
