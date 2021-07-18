@@ -88,7 +88,7 @@ class JackTokenizer:
 
     def stringVal(token):
         """Returns the string value of the current token, without the double quotes."""
-        if (JackTokenizer.stringVal(token)):
+        if (JackTokenizer.isString(token)):
             #skip quotes in constant
             return token[1:-1]
 

@@ -45,8 +45,8 @@ class JackAnalyser:
             self.CompileSubroutine()
 
         #Esperado }
-        #if JackTokenizer.symbol(self.tokenizer.curr_token) != "}":
-            #return False
+        if JackTokenizer.symbol(self.tokenizer.curr_token) != "}":
+            return False
         
         self._output(JackTokenizer.token_type(self.tokenizer.curr_token))
         
@@ -134,7 +134,7 @@ class JackAnalyser:
         self.CompileParameterList()
         self._output("</parameterList>")
         
-        #Esperando ) symbol
+        #Esperando simbolo ')'
         if JackTokenizer.symbol(self.tokenizer.curr_token) != ")":
             return False
             
@@ -146,16 +146,16 @@ class JackAnalyser:
             
         self._output(JackTokenizer.token_type(self.tokenizer.curr_token))
         
-        #checking for var declarations
+        #verificando as declarações de var
         self.tokenizer.advance()
         while JackTokenizer.keyWord(self.tokenizer.curr_token) == "var":
             self.CompileVarDec()
 
-        #check for statements
+        #verifique se há declarações
         while JackTokenizer.keyWord(self.tokenizer.curr_token) in ("let", "if", "while", "do", "return"):
             self.CompileStatements() 
         
-        #Esperando } to end subroutine
+        #Esperando } para terminar a sub-rotina
         if JackTokenizer.symbol(self.tokenizer.curr_token) != "}":
             return False
             
@@ -170,17 +170,16 @@ class JackAnalyser:
 
         if JackTokenizer.keyWord(self.tokenizer.curr_token) not in ("void", "int", "char", "boolean") and not JackTokenizer.identifier(self.tokenizer.curr_token):
             return False
-        
-        self._output(JackTokenizer.token_type(self.tokenizer.curr_token))
-        
-        self.tokenizer.advance()
-        #Esperando var name
-        if not JackTokenizer.identifier(self.tokenizer.curr_token):
-            return False
-        
-        self._output(JackTokenizer.token_type(self.tokenizer.curr_token))
+
+        if not JackTokenizer.symbol(self.tokenizer.curr_token):
+            #Esperando nome da variável:
+            if not JackTokenizer.identifier(self.tokenizer.curr_token):
+                return False
             
-        self.tokenizer.advance()
+            self._output(JackTokenizer.token_type(self.tokenizer.curr_token))
+                
+            self.tokenizer.advance()
+
         while JackTokenizer.symbol(self.tokenizer.curr_token) == ",":
             self._output(JackTokenizer.token_type(self.tokenizer.curr_token))
 
@@ -218,7 +217,7 @@ class JackAnalyser:
             
         self.tokenizer.advance()
         #Esperado var name
-        if self.tokenizer.tokenType() != JackTokenizer.Identifier:
+        if not JackTokenizer.identifier(self.tokenizer.curr_token):
             return False
         
         self._output(JackTokenizer.token_type(self.tokenizer.curr_token))
@@ -481,15 +480,15 @@ class JackAnalyser:
         self._output("<term>")
         thisisterm = False
         
-        if self.tokenizer.intVal(): #integer constante
+        if JackTokenizer.intVal(self.tokenizer.curr_token): #constante integer 
             thisisterm = True
             self._output(JackTokenizer.token_type(self.tokenizer.curr_token))
             
-        elif self.tokenizer.stringVal(): #string constante
+        elif JackTokenizer.stringVal(self.tokenizer.curr_token): #constante string 
             thisisterm = True
             self._output(JackTokenizer.token_type(self.tokenizer.curr_token))
             
-        elif JackTokenizer.keyWord(self.tokenizer.curr_token): #keyword constante
+        elif JackTokenizer.keyWord(self.tokenizer.curr_token): #constante keyword 
             keyterm = JackTokenizer.keyWord(self.tokenizer.curr_token)
 
             #Pode ser true, false, null, this
