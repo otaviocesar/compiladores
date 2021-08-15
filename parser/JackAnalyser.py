@@ -6,6 +6,7 @@ class JackAnalyser:
         self.tokenizer = input_stream
         self.outfile = output_file
 
+          
     def CompileClass(self):
 
         self.xmlout = open(self.outfile, "w")
