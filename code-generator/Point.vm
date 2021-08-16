@@ -1,0 +1,7 @@
+function Point.distance 1
+push argument 0
+pop pointer 0
+push this 0
+push local 0
+add
+pop this 1

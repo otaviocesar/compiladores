@@ -12,9 +12,9 @@ from JackTokenizer import JackTokenizer
 def main():
 
     print('----------------- Gerador de Código ------------------------') 
-    jackfilename = "Main.jack"
+    jackfilename = "Point.jack"
     (jfilename, jextension) = os.path.splitext(jackfilename)
-    jtokresultfilename = jfilename + ".xml"
+    jtokresultfilename = jfilename + ".vm"
     
     with open(jackfilename, 'r') as f:
         tk = JackTokenizer(f.readlines())
