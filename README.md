@@ -11,6 +11,11 @@ Parte II - Analisador Sintático:
 	1. cd /parser
 	2. No terminal rodar o comando: Python JackCompiler.py
 
+Parte III - Gerador de Código Intermediário:
+
+	1. cd /code-generator
+	2. No terminal rodar o comando: Python JackCompiler.py
+
 ## Etapas
 
 	1. Desenvolvimento do analisador léxico
