@@ -16,6 +16,11 @@ Parte III - Gerador de Código Intermediário:
 	1. cd /code-generator
 	2. No terminal rodar o comando: Python JackCompiler.py
 
+Parte IV - Gerador de Código Intermediário:
+
+	1. cd /translator
+	2. No terminal rodar o comando: python main.py BasicTest.vm
+
 ## Etapas
 
 	1. Desenvolvimento do analisador léxico
